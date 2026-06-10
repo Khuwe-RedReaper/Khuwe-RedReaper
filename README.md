@@ -194,6 +194,16 @@ BloodHound enumeration, Kerberoasting simulation, attack path discovery, and MIT
 
 <div align="center">
 
+<img src="https://img.shields.io/badge/LIVE_ENVIRONMENT-MSSP_SECURITY_LAB-8B0000?style=for-the-badge&labelColor=0d1117&color=8B0000"/>
+
+<br/><br/>
+
+<img src="mssp-lab-diagram.svg" width="100%" />
+
+</div>
+
+<div align="center">
+
 <img src="mssp-lab-diagram.svg" width="100%" />
 
 </div>
