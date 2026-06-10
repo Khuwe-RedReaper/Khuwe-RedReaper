@@ -175,7 +175,165 @@ BloodHound enumeration, Kerberoasting simulation, attack path discovery, and MIT
 <div align="center">
 
 ```
-<img width="1360" height="1040" alt="image" src="https://github.com/user-attachments/assets/6b479c1a-29c6-4445-afc7-5d90225042ec" />
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MSSP Security Lab — Active Build</title>
+  <style>
+    body {
+      margin: 0;
+      background: #0d0d0d;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+    .card {
+      background: #111;
+      border: 1px solid #2a2a2a;
+      border-radius: 16px;
+      padding: 32px;
+      max-width: 780px;
+      width: 100%;
+      box-sizing: border-box;
+    }
+    svg text { font-family: inherit; }
+
+    /* Color ramps */
+    .c-teal rect   { fill: #0F6E56; stroke: #5DCAA5; }
+    .c-teal text   { fill: #9FE1CB; }
+    .c-amber rect  { fill: #854F0B; stroke: #EF9F27; }
+    .c-amber text  { fill: #FAC775; }
+    .c-gray rect   { fill: #444441; stroke: #888780; }
+    .c-gray text   { fill: #D3D1C7; }
+
+    .t  { font-size: 14px; fill: #c2c0b6; }
+    .ts { font-size: 12px; fill: #888780; }
+    .th { font-size: 14px; font-weight: 600; }
+
+    .arr {
+      stroke: #555;
+      stroke-width: 1.5;
+      fill: none;
+    }
+
+    @media (prefers-color-scheme: light) {
+      body { background: #f0f0f0; }
+      .card { background: #fff; border-color: #ddd; }
+      .c-teal rect  { fill: #E1F5EE; stroke: #0F6E56; }
+      .c-teal text  { fill: #085041; }
+      .c-amber rect { fill: #FAEEDA; stroke: #854F0B; }
+      .c-amber text { fill: #633806; }
+      .c-gray rect  { fill: #F1EFE8; stroke: #5F5E5A; }
+      .c-gray text  { fill: #2C2C2A; }
+      .t  { fill: #3d3d3a; }
+      .ts { fill: #73726c; }
+      .arr { stroke: #aaa; }
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <svg width="100%" viewBox="0 0 680 520" role="img" xmlns="http://www.w3.org/2000/svg">
+      <title>MSSP Security Lab — Active Build</title>
+      <desc>Network topology showing FortiGate 60F and Tailscale VPN feeding into a Proxmox VE hypervisor with six VMs/services.</desc>
+
+      <defs>
+        <marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+          <path d="M2 1L8 5L2 9" fill="none" stroke="#666" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </marker>
+      </defs>
+
+      <!-- Title -->
+      <text class="th t" x="340" y="28" text-anchor="middle" style="font-size:15px;fill:#c2c0b6">MSSP Security Lab — Active Build</text>
+
+      <!-- Internet -->
+      <g class="c-gray">
+        <rect x="30" y="50" width="110" height="56" rx="8" stroke-width="0.5"/>
+        <text class="th" x="85" y="74" text-anchor="middle" dominant-baseline="central">Internet</text>
+        <text class="ts" x="85" y="92" text-anchor="middle" dominant-baseline="central">Upstream</text>
+      </g>
+
+      <!-- Arrow: Internet → FortiGate -->
+      <line x1="140" y1="78" x2="198" y2="78" class="arr" marker-end="url(#arrow)"/>
+
+      <!-- FortiGate 60F -->
+      <g class="c-amber">
+        <rect x="200" y="50" width="180" height="56" rx="8" stroke-width="0.5"/>
+        <text class="th" x="290" y="72" text-anchor="middle" dominant-baseline="central">FortiGate 60F</text>
+        <text class="ts" x="290" y="90" text-anchor="middle" dominant-baseline="central">⚠ Pending NFR License</text>
+      </g>
+
+      <!-- Arrow: FortiGate → Tailscale -->
+      <line x1="380" y1="78" x2="438" y2="78" class="arr" marker-end="url(#arrow)"/>
+
+      <!-- Operational legend -->
+      <circle cx="620" cy="56" r="6" fill="#1D9E75"/>
+      <text class="ts" x="632" y="60" dominant-baseline="central">Operational</text>
+
+      <!-- Tailscale VPN -->
+      <g class="c-teal">
+        <rect x="440" y="50" width="180" height="56" rx="8" stroke-width="0.5"/>
+        <text class="th" x="530" y="72" text-anchor="middle" dominant-baseline="central">Tailscale VPN</text>
+        <text class="ts" x="530" y="90" text-anchor="middle" dominant-baseline="central">✓ Active</text>
+      </g>
+
+      <!-- Proxmox container -->
+      <rect x="22" y="130" width="636" height="360" rx="14" fill="none" stroke="#444" stroke-width="0.5" stroke-dasharray="6 4"/>
+      <text class="ts" x="40" y="152" style="fill:#666">Proxmox VE Hypervisor  ✓ Operational</text>
+
+      <!-- Dashed drop lines -->
+      <line x1="290" y1="106" x2="290" y2="130" stroke="#444" stroke-width="0.5" stroke-dasharray="4 3"/>
+      <line x1="530" y1="106" x2="530" y2="130" stroke="#444" stroke-width="0.5" stroke-dasharray="4 3"/>
+
+      <!-- Row 1 -->
+      <g class="c-teal">
+        <rect x="42" y="168" width="178" height="64" rx="8" stroke-width="0.5"/>
+        <text class="th" x="131" y="190" text-anchor="middle" dominant-baseline="central">Windows Server 2022</text>
+        <text class="ts" x="131" y="210" text-anchor="middle" dominant-baseline="central">✓ Active Directory</text>
+      </g>
+      <g class="c-teal">
+        <rect x="251" y="168" width="178" height="64" rx="8" stroke-width="0.5"/>
+        <text class="th" x="340" y="190" text-anchor="middle" dominant-baseline="central">Wazuh SIEM</text>
+        <text class="ts" x="340" y="210" text-anchor="middle" dominant-baseline="central">✓ Ubuntu 22.04</text>
+      </g>
+      <g class="c-teal">
+        <rect x="460" y="168" width="178" height="64" rx="8" stroke-width="0.5"/>
+        <text class="th" x="549" y="190" text-anchor="middle" dominant-baseline="central">Kali Linux</text>
+        <text class="ts" x="549" y="210" text-anchor="middle" dominant-baseline="central">✓ Attack VM</text>
+      </g>
+
+      <!-- Connectors row 1 → row 2 -->
+      <line x1="131" y1="232" x2="131" y2="282" stroke="#444" stroke-width="0.5" stroke-dasharray="4 3"/>
+      <line x1="340" y1="232" x2="340" y2="282" stroke="#444" stroke-width="0.5" stroke-dasharray="4 3"/>
+      <line x1="549" y1="232" x2="549" y2="282" stroke="#444" stroke-width="0.5" stroke-dasharray="4 3"/>
+
+      <!-- Row 2 -->
+      <g class="c-amber">
+        <rect x="42" y="282" width="178" height="64" rx="8" stroke-width="0.5"/>
+        <text class="th" x="131" y="304" text-anchor="middle" dominant-baseline="central">VLAN Segmentation</text>
+        <text class="ts" x="131" y="322" text-anchor="middle" dominant-baseline="central">⚠ Pending FortiGate</text>
+      </g>
+      <g class="c-gray">
+        <rect x="251" y="282" width="178" height="64" rx="8" stroke-width="0.5"/>
+        <text class="th" x="340" y="304" text-anchor="middle" dominant-baseline="central">NodeZero</text>
+        <text class="ts" x="340" y="322" text-anchor="middle" dominant-baseline="central">[ Autonomous Pentest ]</text>
+      </g>
+      <g class="c-gray">
+        <rect x="460" y="282" width="178" height="64" rx="8" stroke-width="0.5"/>
+        <text class="th" x="549" y="304" text-anchor="middle" dominant-baseline="central">Securden PAM</text>
+        <text class="ts" x="549" y="322" text-anchor="middle" dominant-baseline="central">[ Planned ]</text>
+      </g>
+
+      <!-- Footer -->
+      <text class="ts" x="340" y="500" text-anchor="middle" style="fill:#555">github.com/Khuwe-RedReaper/mssp-lab</text>
+    </svg>
+  </div>
+</body>
+</html>
 
 ```
 
