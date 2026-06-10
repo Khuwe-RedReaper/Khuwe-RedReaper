@@ -20,7 +20,11 @@
 
 ---
 
-## `>> WHOAMI`
+<div align="center">
+
+<img src="https://img.shields.io/badge/WHOAMI-00ff41?style=for-the-badge&labelColor=0d1117"/>
+
+</div>
 
 I'm **Onalethata Lesley Khuwe** — a Cybersecurity Engineer and Red Team Operator based in **Gaborone, Botswana** 🇧🇼.
 
