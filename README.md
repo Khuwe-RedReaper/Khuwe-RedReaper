@@ -26,17 +26,6 @@
 
 </div>
 
-<div align="center">
-
-<pre>
-[ STATUS ]      OPERATIONAL
-[ LOCATION ]    GABORONE, BOTSWANA
-[ ROLE ]        CYBERSECURITY ENGINEER
-[ SPECIALTY ]   RED TEAM DEVELOPMENT
-[ CURRENT ]     MSSP SECURITY LAB
-</pre>
-
-</div>
 
 I'm **Onalethata Lesley Khuwe** — a Cybersecurity Engineer and Red Team Operator based in **Gaborone, Botswana** 🇧🇼.
 
